@@ -9,6 +9,10 @@ inputs:
     description: 'The command to build the Java project'
     required: false
     default: 'mvn package -Pprod,azure'
+  package_path:
+    description: 'The path the generated package, to be uploaded on the last step'
+    required: false
+    default: '${{ github.workspace }}/target/*.[j,w]ar'
 runs:
   using: "composite"
   steps:
@@ -28,5 +32,5 @@ runs:
       uses: actions/upload-artifact@v2
       with:
         name: package
-        path: '${{ github.workspace }}/target/*.[j,w]ar'
+        path: ${{ inputs.package_path }}
         retention-days: 1
