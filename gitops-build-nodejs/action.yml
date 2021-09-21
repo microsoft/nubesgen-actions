@@ -1,0 +1,55 @@
+name: 'Build a NodeJS project'
+description: 'Build a NodeJS project'
+inputs:
+  nodejs_version:
+    description: 'The NodeJS version'
+    required: false
+    default: '14'
+  application_package_path:
+    description: 'The path to your web app project, defaults to the repository root'
+    required: false
+    default: '.'
+  build_command:
+    description: 'The command to build the NodeJS project'
+    required: false
+    default: 'npm run build --if-present'
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Use Node.js ${{ inputs.nodejs_version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ inputs.nodejs_version }}
+    - name: Cache NPM packages
+      uses: actions/cache@v2
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+    - name: Install NPM packages
+      run: npm ci
+      shell: bash
+    - name: Build the application
+      run: ${{ inputs.build_command }}
+      shell: bash
+    - name: Run tests
+      run: npm test --if-present
+      shell: bash
+    - name: Package application
+      run: |
+        PKG_FILE=$(npm pack ${{ inputs.application_package_path }} | tail -n1)
+        tar -xvf $PKG_FILE
+        cp -f ${{ inputs.application_package_path }}/package-lock.json package/
+        cd package
+        npm ci --production
+        zip -r ../package.zip *
+      shell: bash
+    - name: Temporarily save package
+      uses: actions/upload-artifact@v2
+      with:
+        name: package
+        path: './package.zip'
+        retention-days: 1

@@ -1,0 +1,32 @@
+name: 'Build'
+description: 'Build a Java project using Gradle'
+inputs:
+  java_version:
+    description: 'The Java version'
+    required: false
+    default: '11'
+  build_command:
+    description: 'The command to build the Java project'
+    required: false
+    default: 'gradle build -Pprod,azure'
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Set up Java
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'temurin'
+        java-version: ${{ inputs.java_version }}
+        check-latest: false
+        cache: 'gradle'
+    - name: Build with Gradle
+      run: ${{ inputs.build_command }}
+      shell: bash
+    - name: Temporarily save package
+      uses: actions/upload-artifact@v2
+      with:
+        name: package
+        path: '${{ github.workspace }}/build/libs/*.[j,w]ar'
+        retention-days: 1

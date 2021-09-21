@@ -1,0 +1,42 @@
+name: 'Build a .NET application'
+description: 'Build a .NET application'
+inputs:
+  dotnet_version:
+    description: 'The .NET version'
+    required: false
+    default: '3.1'
+  application_package_path:
+    description: 'The path to your web app project, defaults to the repository root'
+    required: false
+    default: '.'
+  build_command:
+    description: 'The command to build the .NET project'
+    required: false
+    default: 'dotnet build --configuration Release'
+  publish_command:
+    description: 'The command to publish the .NET project'
+    required: false
+    default: 'dotnet publish -c Release -o output'
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Set up .NET ${{ inputs.dotnet_version }}
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ inputs.dotnet_version }}
+    - name: Build .NET application
+      working-directory: ${{ inputs.application_package_path }}
+      run: ${{ inputs.build_command }}
+      shell: bash
+    - name: Publish .NET app
+      run: ${{ inputs.publish_command }}
+      working-directory: ${{ inputs.application_package_path }}
+      shell: bash
+    - name: Temporarily save package
+      uses: actions/upload-artifact@v2
+      with:
+        name: package
+        path: '${{ inputs.application_package_path }}/output'
+        retention-days: 1
