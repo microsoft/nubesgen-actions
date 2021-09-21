@@ -52,7 +52,7 @@ runs:
         -var="environment=$ENVIRONMENT"
       shell: bash
       working-directory: '${{ github.workspace }}/terraform'
-    - name: Get application name generated in Terraform
+    - name: Get output data from Terraform
       env:
         AZURE_CREDENTIALS: ${{ inputs.azure_credentials }}
       run: |
@@ -60,7 +60,7 @@ runs:
         echo $(terraform output -json) > terraform-output.json
       working-directory: '${{ github.workspace }}/terraform'
       shell: bash
-    - name: Save application name
+    - name: Save Terraform output data
       uses: actions/upload-artifact@v2
       with:
         name: terraform-output
