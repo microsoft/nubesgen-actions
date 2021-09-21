@@ -27,7 +27,7 @@ runs:
       run: mvn package -Pnative -Dquarkus.native.container-build=true -Dquarkus.container-image.build=true
       shell: bash
     - name: Build with Docker
-      run: docker build -t ${{ env.CONTAINER_REGISTRY_NAME }}.azurecr.io/${{ env.APPLICATION_CAF_NAME }}/${{ env.APPLICATION_CAF_NAME }}:${{ github.sha }} .
+      run: docker build -f src/main/docker/Dockerfile.native -t ${{ env.CONTAINER_REGISTRY_NAME }}.azurecr.io/${{ env.APPLICATION_CAF_NAME }}/${{ env.APPLICATION_CAF_NAME }}:${{ github.sha }} .
       shell: bash
     - name: Login to Azure
       uses: azure/login@v1
