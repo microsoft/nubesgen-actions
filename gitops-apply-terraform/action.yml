@@ -49,6 +49,7 @@ runs:
         terraform apply \
         -input=false \
         -auto-approve \
+        -var="terraform_storage_account=$TF_STORAGE_ACCOUNT" \
         -var="environment=$ENVIRONMENT"
       shell: bash
       working-directory: '${{ github.workspace }}/terraform'
