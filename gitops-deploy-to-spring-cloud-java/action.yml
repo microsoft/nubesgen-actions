@@ -29,5 +29,5 @@ runs:
       run: az extension add -y --name spring-cloud
       shell: bash
     - name: Deploy to Azure Spring Cloud
-      run: az spring-cloud app deploy --resource-group ${{ env.RESOURCE_GROUP }} --service ${{ env.SPRING_CLOUD_SERVICE_NAME }} --name ${{ env.APPLICATION_CAF_NAME }} --artifact-path '*.[j,w]ar'
+      run: az spring-cloud app deploy --resource-group ${{ env.RESOURCE_GROUP }} --service ${{ env.SPRING_CLOUD_SERVICE_NAME }} --name ${{ env.APPLICATION_CAF_NAME }} --artifact-path *.jar
       shell: bash
