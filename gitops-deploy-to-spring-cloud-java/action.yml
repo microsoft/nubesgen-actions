@@ -18,6 +18,7 @@ runs:
         echo "RESOURCE_GROUP=$(cat terraform-output.json | jq -r .resource_group.value)" >> $GITHUB_ENV
       shell: bash
     - name: Download application package
+      id: download-application
       uses: actions/download-artifact@v2
       with:
         name: package
@@ -29,5 +30,5 @@ runs:
       run: az extension add -y --name spring-cloud
       shell: bash
     - name: Deploy to Azure Spring Cloud
-      run: az spring-cloud app deploy --resource-group ${{ env.RESOURCE_GROUP }} --service ${{ env.SPRING_CLOUD_SERVICE_NAME }} --name ${{ env.APPLICATION_CAF_NAME }} --artifact-path *.jar
+      run: az spring-cloud app deploy --resource-group ${{ env.RESOURCE_GROUP }} --service ${{ env.SPRING_CLOUD_SERVICE_NAME }} --name ${{ env.APPLICATION_CAF_NAME }} --artifact-path ${{steps.download-application.outputs.download-path}}
       shell: bash
