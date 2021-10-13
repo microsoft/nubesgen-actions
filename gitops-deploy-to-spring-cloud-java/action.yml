@@ -15,6 +15,7 @@ runs:
       run: |
         echo "APPLICATION_CAF_NAME=$(cat terraform-output.json | jq -r .application_caf_name.value)" >> $GITHUB_ENV
         echo "SPRING_CLOUD_SERVICE_NAME=$(cat terraform-output.json | jq -r .spring_cloud_service_name.value)" >> $GITHUB_ENV
+        echo "RESOURCE_GROUP=$(cat terraform-output.json | jq -r .resource_group.value)" >> $GITHUB_ENV
       shell: bash
     - name: Download application package
       uses: actions/download-artifact@v2
@@ -28,5 +29,5 @@ runs:
       run: az extension add -y --name spring-cloud
       shell: bash
     - name: Deploy to Azure Spring Cloud
-      run: az spring-cloud app deploy --service ${{ env.SPRING_CLOUD_SERVICE_NAME }} --name ${{ env.APPLICATION_CAF_NAME }} --jar-path '*.[j,w]ar'
+      run: az spring-cloud app deploy --resource-group ${{ env.RESOURCE_GROUP }} --service ${{ env.SPRING_CLOUD_SERVICE_NAME }} --name ${{ env.APPLICATION_CAF_NAME }} --jar-path '*.[j,w]ar'
       shell: bash
