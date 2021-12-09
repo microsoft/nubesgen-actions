@@ -29,10 +29,9 @@ runs:
       uses: azure/login@v1
       with:
         creds: ${{ inputs.azure_credentials }}
-    - name: deploy to production step with soruce code
+    - name: Deploy to Azure Spring Cloud
         uses: azure/spring-cloud-deploy@v1
         with:
-          azure-subscription: ${{ env.AZURE_SUBSCRIPTION }}
           action: deploy
           service-name: ${{ env.SPRING_CLOUD_SERVICE_NAME }}
           app-name: ${{ env.APPLICATION_CAF_NAME }}
