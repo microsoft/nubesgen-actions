@@ -32,6 +32,7 @@ runs:
     - name: Get Subscription ID
       run: |
         echo "SUBSCRIPTION_ID=$(az account show --query id --output tsv --only-show-errors)" >> $GITHUB_ENV
+      shell: bash
     - name: Deploy to Azure Spring Cloud
       uses: azure/spring-cloud-deploy@v1
       with:
