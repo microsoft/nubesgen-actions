@@ -30,10 +30,10 @@ runs:
       with:
         creds: ${{ inputs.azure_credentials }}
     - name: Deploy to Azure Spring Cloud
-        uses: azure/spring-cloud-deploy@v1
-        with:
-          action: deploy
-          service-name: ${{ env.SPRING_CLOUD_SERVICE_NAME }}
-          app-name: ${{ env.APPLICATION_CAF_NAME }}
-          use-staging-deployment: ${{ inputs.use_staging_deployment }}
-          package: "*.[j,w]ar"
+      uses: azure/spring-cloud-deploy@v1
+      with:
+        action: deploy
+        service-name: ${{ env.SPRING_CLOUD_SERVICE_NAME }}
+        app-name: ${{ env.APPLICATION_CAF_NAME }}
+        use-staging-deployment: ${{ inputs.use_staging_deployment }}
+        package: "*.[j,w]ar"
