@@ -20,7 +20,6 @@ runs:
         echo "APPLICATION_CAF_NAME=$(cat terraform-output.json | jq -r .application_caf_name.value)" >> $GITHUB_ENV
         echo "SPRING_CLOUD_SERVICE_NAME=$(cat terraform-output.json | jq -r .spring_cloud_service_name.value)" >> $GITHUB_ENV
         echo "RESOURCE_GROUP=$(cat terraform-output.json | jq -r .resource_group.value)" >> $GITHUB_ENV
-        echo "SUBSCRIPTION_ID=$(echo ${{ inputs.azure_credentials }} | jq -r .subscriptionId)" >> $GITHUB_ENV
       shell: bash
     - name: Download application package
       uses: actions/download-artifact@v2
@@ -30,6 +29,9 @@ runs:
       uses: azure/login@v1
       with:
         creds: ${{ inputs.azure_credentials }}
+    - name: Get Subscription ID
+      run: |
+        echo "SUBSCRIPTION_ID=$(az account show --query id --output tsv --only-show-errors)" >> $GITHUB_ENV
     - name: Deploy to Azure Spring Cloud
       uses: azure/spring-cloud-deploy@v1
       with:
