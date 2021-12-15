@@ -34,7 +34,7 @@ runs:
       with:
         template: '${{ github.workspace }}/bicep/main.bicep'
         scope: subscription
-        deploymentName: 'nubesgen-${{ inputs.project_name }}-${{env.ENVIRONMENT}}''
+        deploymentName: 'nubesgen-${{ inputs.project_name }}-${{env.ENVIRONMENT}}'
         region: '${{ inputs.deployment_region }}'
         outputFilePath: '${{ github.workspace }}/bicep/bicep-output.json'
     - name: Save Bicep output data
