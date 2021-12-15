@@ -36,10 +36,3 @@ runs:
         scope: subscription
         deploymentName: 'nubesgen-${{ inputs.project_name }}-${{env.ENVIRONMENT}}'
         region: '${{ inputs.deployment_region }}'
-        outputFilePath: '${{ github.workspace }}/bicep/bicep-output.json'
-    - name: Save Bicep output data
-      uses: actions/upload-artifact@v2
-      with:
-        name: terraform-output
-        path: '${{ github.workspace }}/bicep/bicep-output.json'
-        retention-days: 1
