@@ -10,7 +10,7 @@ inputs:
     required: false
     default: 'mvn package -Pprod,azure'
   package_path:
-    description: 'The path the generated package, to be uploaded on the last step'
+    description: 'The path to the generated package, to be uploaded on the last step'
     required: false
     default: '${{ github.workspace }}/target/*.[j,w]ar'
 runs:
