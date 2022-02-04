@@ -80,10 +80,10 @@ runs:
       run: |
         export ARM_CLIENT_SECRET=$(echo $AZURE_CREDENTIALS | jq -r .clientSecret)
         echo $(terraform output -json) > terraform-output.json
-        echo "::set-output name=application_name::$(jq -r .application_name terraform-output.json)" 
-        echo "::set-output name=application_url::$(jq -r .application_url terraform-output.json)" 
-        echo "::set-output name=resource_group::$(jq -r .resource_group terraform-output.json)" 
-        echo "::set-output name=container_registry_name::$(jq -r .container_registry_name terraform-output.json)" 
-        echo "::set-output name=spring_cloud_service_name::$(jq -r .spring_cloud_service_name terraform-output.json)" 
+        echo "::set-output name=application_name::$(jq -r .application_name.value terraform-output.json)" 
+        echo "::set-output name=application_url::$(jq -r .application_url.value terraform-output.json)" 
+        echo "::set-output name=resource_group::$(jq -r .resource_group.value terraform-output.json)" 
+        echo "::set-output name=container_registry_name::$(jq -r .container_registry_name.value terraform-output.json)" 
+        echo "::set-output name=spring_cloud_service_name::$(jq -r .spring_cloud_service_name.value terraform-output.json)" 
       working-directory: '${{ github.workspace }}/terraform'
       shell: bash
