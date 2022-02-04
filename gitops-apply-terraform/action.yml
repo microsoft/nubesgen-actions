@@ -14,19 +14,19 @@ inputs:
 outputs: 
   application_name:
     description: 'Name of the application'
-    value: ${{ steps.terraform-output.output.application_name }}    
+    value: ${{ steps.terraform-output.outputs.application_name }}    
   application_url: 
     description: 'URL of the application'
-    value:     
+    value: ${{ steps.terraform-output.outputs.application_url }}    
   resource_group: 
     description: 'Resource group name where the resources have been deployed'
-    value:     
+    value: ${{ steps.terraform-output.outputs.resource_group }}    
   container_registry_name: 
     description: 'The Container registry name that have been deployed'
-    value:    
+    value: ${{ steps.terraform-output.outputs.container_registry_name }}    
   spring_cloud_service_name: 
     description: 'Azure Spring Cloud service name'
-    value:    
+    value: ${{ steps.terraform-output.outputs.spring_cloud_service_name }}    
 runs:
   using: "composite"
   steps:
