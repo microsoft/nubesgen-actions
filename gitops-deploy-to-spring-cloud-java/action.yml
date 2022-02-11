@@ -8,19 +8,19 @@ inputs:
     description: 'Use staging deployement (blue/green deployment)'
     required: false
     default: false
+  application_name: 
+    description: 'The name of the application where to deploy'
+    required: true
+  artifact_name:
+    description: 'The name of the artifact containing the app to deploy.'
+    required: false
+    default: 'package'    
+  spring_cloud_service_name: 
+    description: 'Azure Spring Cloud service name'
+    required: true
 runs:
   using: "composite"
   steps:
-    - name: Download Terraform output data
-      uses: actions/download-artifact@v2
-      with:
-        name: terraform-output
-    - name: Set environment variables
-      run: |
-        echo "APPLICATION_CAF_NAME=$(cat terraform-output.json | jq -r .application_caf_name.value)" >> $GITHUB_ENV
-        echo "SPRING_CLOUD_SERVICE_NAME=$(cat terraform-output.json | jq -r .spring_cloud_service_name.value)" >> $GITHUB_ENV
-        echo "RESOURCE_GROUP=$(cat terraform-output.json | jq -r .resource_group.value)" >> $GITHUB_ENV
-      shell: bash
     - name: Download application package
       uses: actions/download-artifact@v2
       with:
@@ -38,7 +38,7 @@ runs:
       with:
         action: deploy
         azure-subscription: ${{ env.SUBSCRIPTION_ID }}
-        service-name: ${{ env.SPRING_CLOUD_SERVICE_NAME }}
-        app-name: ${{ env.APPLICATION_CAF_NAME }}
+        service-name: ${{ inputs.spring_cloud_service_name }}
+        app-name: ${{ inputs.application_name }}
         use-staging-deployment: ${{ inputs.use_staging_deployment }}
         package: "*.[j,w]ar"
