@@ -41,7 +41,8 @@ runs:
       with:
         azcliversion: 2.30.0
         inlineScript: |
-          az storage account network-rule add --account-name $TF_STORAGE_ACCOUNT --ip-address $(curl whatismyip.akamai.com)
+          az storage account network-rule add --account-name $TF_STORAGE_ACCOUNT --ip-address $(curl whatismyip.akamai.com) --only-show-errors
+          az storage account network-rule list --account-name $TF_STORAGE_ACCOUNT
     - name: Initialize Terraform
       env:
         AZURE_CREDENTIALS: ${{ inputs.azure_credentials }}
