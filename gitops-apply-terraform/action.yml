@@ -30,6 +30,18 @@ runs:
       uses: hashicorp/setup-terraform@v1
       with:
         terraform_wrapper: false
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ inputs.azure_credentials }}   
+    - name: Authorize Terraform to access the Storage Account
+      uses: azure/CLI@v1
+      env:
+        TF_STORAGE_ACCOUNT: ${{ inputs.tf_storage_account }}
+      with:
+        azcliversion: 2.30.0
+        inlineScript: |
+          az storage account network-rule add --account-name $TF_STORAGE_ACCOUNT --ip-address $(curl whatismyip.akamai.com)
     - name: Initialize Terraform
       env:
         AZURE_CREDENTIALS: ${{ inputs.azure_credentials }}
