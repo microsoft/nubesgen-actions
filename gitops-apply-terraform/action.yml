@@ -25,6 +25,7 @@ runs:
         echo "ARM_CLIENT_ID=$(echo $AZURE_CREDENTIALS | jq -r .clientId)" >> $GITHUB_ENV
         echo "ARM_SUBSCRIPTION_ID=$(echo $AZURE_CREDENTIALS | jq -r .subscriptionId)" >> $GITHUB_ENV
         echo "ARM_TENANT_ID=$(echo $AZURE_CREDENTIALS | jq -r .tenantId)" >> $GITHUB_ENV
+        echo "LOCAL_IP=$(curl whatismyip.akamai.com)" >> $GITHUB_ENV
       shell: bash
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -41,7 +42,6 @@ runs:
       with:
         azcliversion: 2.30.0
         inlineScript: |
-          echo "LOCAL_IP=$(curl whatismyip.akamai.com)" >> $GITHUB_ENV
           az storage account network-rule add --account-name $TF_STORAGE_ACCOUNT --ip-address $LOCAL_IP --only-show-errors
           sleep 10
     - name: Initialize Terraform
