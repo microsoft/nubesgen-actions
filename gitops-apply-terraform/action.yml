@@ -42,19 +42,19 @@ runs:
         azcliversion: 2.30.0
         inlineScript: |
           az storage account network-rule add --account-name $TF_STORAGE_ACCOUNT --ip-address $(curl whatismyip.akamai.com) --only-show-errors
-          az storage account network-rule list --account-name $TF_STORAGE_ACCOUNT
     - name: Initialize Terraform
       env:
         AZURE_CREDENTIALS: ${{ inputs.azure_credentials }}
         TF_STORAGE_ACCOUNT: ${{ inputs.tf_storage_account }}
       run: |
         export ARM_CLIENT_SECRET=$(echo $AZURE_CREDENTIALS | jq -r .clientSecret)
-        terraform init \
+        for i in {1..5}; do terraform init \
         -input=false \
         -backend-config="resource_group_name=${{ inputs.resource_group_name }}" \
         -backend-config="storage_account_name=$TF_STORAGE_ACCOUNT" \
         -backend-config="container_name=tfstate" \
-        -backend-config="key=$ENVIRONMENT.terraform.tfstate"
+        -backend-config="key=$ENVIRONMENT.terraform.tfstate" \
+        && break || sleep 10; done
       shell: bash
       working-directory: '${{ github.workspace }}/terraform'
     - name: Apply Terraform
