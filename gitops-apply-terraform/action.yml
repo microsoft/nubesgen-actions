@@ -22,7 +22,7 @@ outputs:
     description: 'Resource group name where the resources has been deployed'
     value: ${{ steps.terraform-output.outputs.resource_group }}    
   container_registry_name: 
-    description: 'The Container registry name that have been deployed'
+    description: 'The Container registry name that have has deployed'
     value: ${{ steps.terraform-output.outputs.container_registry_name }}    
   spring_cloud_service_name: 
     description: 'Azure Spring Cloud service name'
