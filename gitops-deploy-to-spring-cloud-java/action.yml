@@ -9,7 +9,7 @@ inputs:
     required: false
     default: false
   application_name: 
-    description: 'The name of the application where to deploy'
+    description: 'The name of the application that will be deployed'
     required: true
   artifact_name:
     description: 'The name of the artifact containing the app to deploy.'
