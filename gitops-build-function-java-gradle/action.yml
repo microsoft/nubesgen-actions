@@ -10,7 +10,7 @@ inputs:
     required: false
     default: 'gradle build azureFunctionsPackage -Pprod,azure'
   application_name: 
-    description: 'The name of the application where to deploy'
+    description: 'The name of the application that will be deployed'
     required: true  
   resource_group: 
     description: 'The name of the resource group containing the resources'
