@@ -19,7 +19,7 @@ outputs:
     description: 'URL of the application'
     value: ${{ steps.terraform-output.outputs.application_url }}    
   resource_group: 
-    description: 'Resource group name where the resources has been deployed'
+    description: 'Resource group name where the resources have been deployed'
     value: ${{ steps.terraform-output.outputs.resource_group }}    
   container_registry_name: 
     description: 'The Container registry name that have has deployed'
