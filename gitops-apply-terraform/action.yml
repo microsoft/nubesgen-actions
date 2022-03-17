@@ -41,23 +41,38 @@ runs:
         echo "ARM_CLIENT_ID=$(echo $AZURE_CREDENTIALS | jq -r .clientId)" >> $GITHUB_ENV
         echo "ARM_SUBSCRIPTION_ID=$(echo $AZURE_CREDENTIALS | jq -r .subscriptionId)" >> $GITHUB_ENV
         echo "ARM_TENANT_ID=$(echo $AZURE_CREDENTIALS | jq -r .tenantId)" >> $GITHUB_ENV
+        echo "LOCAL_IP=$(curl whatismyip.akamai.com)" >> $GITHUB_ENV
       shell: bash
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
       with:
         terraform_wrapper: false
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ inputs.azure_credentials }}   
+    - name: Authorize local IP to access the Storage Account
+      uses: azure/CLI@v1
+      env:
+        TF_STORAGE_ACCOUNT: ${{ inputs.tf_storage_account }}
+      with:
+        azcliversion: 2.30.0
+        inlineScript: |
+          az storage account network-rule add --account-name $TF_STORAGE_ACCOUNT --ip-address $LOCAL_IP --only-show-errors
+          sleep 10
     - name: Initialize Terraform
       env:
         AZURE_CREDENTIALS: ${{ inputs.azure_credentials }}
         TF_STORAGE_ACCOUNT: ${{ inputs.tf_storage_account }}
       run: |
         export ARM_CLIENT_SECRET=$(echo $AZURE_CREDENTIALS | jq -r .clientSecret)
-        terraform init \
+        for i in {1..10}; do terraform init \
         -input=false \
         -backend-config="resource_group_name=${{ inputs.resource_group_name }}" \
         -backend-config="storage_account_name=$TF_STORAGE_ACCOUNT" \
         -backend-config="container_name=tfstate" \
-        -backend-config="key=$ENVIRONMENT.terraform.tfstate"
+        -backend-config="key=$ENVIRONMENT.terraform.tfstate" \
+        && break || sleep 10; done
       shell: bash
       working-directory: '${{ github.workspace }}/terraform'
     - name: Apply Terraform
@@ -87,3 +102,17 @@ runs:
         echo "::set-output name=spring_cloud_service_name::$(jq -r .spring_cloud_service_name.value terraform-output.json)" 
       working-directory: '${{ github.workspace }}/terraform'
       shell: bash
+    - name: Disable local IP access to the Storage Account
+      uses: azure/CLI@v1
+      env:
+        TF_STORAGE_ACCOUNT: ${{ inputs.tf_storage_account }}
+      with:
+        azcliversion: 2.30.0
+        inlineScript: |
+          az storage account network-rule remove --account-name $TF_STORAGE_ACCOUNT --ip-address $LOCAL_IP --only-show-errors
+    - name: Save Terraform output data
+      uses: actions/upload-artifact@v2
+      with:
+        name: terraform-output
+        path: '${{ github.workspace }}/terraform/terraform-output.json'
+        retention-days: 1
