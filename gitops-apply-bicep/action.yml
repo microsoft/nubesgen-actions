@@ -10,6 +10,22 @@ inputs:
   deployment_region: 
     description: 'Target Azure Region for deployment'
     required: true  
+outputs: 
+  application_name:
+    description: 'Name of the application'
+    value:     
+  application_url: 
+    description: 'URL of the application'
+    value:     
+  resource_group: 
+    description: 'Resource group name where the resources have been deployed'
+    value:     
+  container_registry_name: 
+    description: 'The Container registry name that has been deployed'
+    value:    
+  spring_cloud_service_name: 
+    description: 'Azure Spring Cloud service name'
+    value:           
 runs:
   using: "composite"
   steps:
