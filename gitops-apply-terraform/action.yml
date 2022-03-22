@@ -14,19 +14,19 @@ inputs:
 outputs: 
   application_name:
     description: 'Name of the application'
-    value: ${{ steps.terraform-output.outputs.application_name }}    
+    value: ${{ steps.terraform-output.outputs.application_name }}
   application_url: 
     description: 'URL of the application'
-    value: ${{ steps.terraform-output.outputs.application_url }}    
+    value: ${{ steps.terraform-output.outputs.application_url }}
   resource_group: 
     description: 'Resource group name where the resources have been deployed'
-    value: ${{ steps.terraform-output.outputs.resource_group }}    
+    value: ${{ steps.terraform-output.outputs.resource_group }}
   container_registry_name: 
     description: 'The Container registry name that have has deployed'
-    value: ${{ steps.terraform-output.outputs.container_registry_name }}    
+    value: ${{ steps.terraform-output.outputs.container_registry_name }}
   spring_cloud_service_name: 
     description: 'Azure Spring Cloud service name'
-    value: ${{ steps.terraform-output.outputs.spring_cloud_service_name }}    
+    value: ${{ steps.terraform-output.outputs.spring_cloud_service_name }}
 runs:
   using: "composite"
   steps:
@@ -95,11 +95,11 @@ runs:
       run: |
         export ARM_CLIENT_SECRET=$(echo $AZURE_CREDENTIALS | jq -r .clientSecret)
         echo $(terraform output -json) > terraform-output.json
-        echo "::set-output name=application_name::$(jq -r .application_name.value terraform-output.json)" 
-        echo "::set-output name=application_url::$(jq -r .application_url.value terraform-output.json)" 
-        echo "::set-output name=resource_group::$(jq -r .resource_group.value terraform-output.json)" 
-        echo "::set-output name=container_registry_name::$(jq -r .container_registry_name.value terraform-output.json)" 
-        echo "::set-output name=spring_cloud_service_name::$(jq -r .spring_cloud_service_name.value terraform-output.json)" 
+        echo "::set-output name=application_name::$(jq -r .application_name.value terraform-output.json)"
+        echo "::set-output name=application_url::$(jq -r .application_url.value terraform-output.json)"
+        echo "::set-output name=resource_group::$(jq -r .resource_group.value terraform-output.json)"
+        echo "::set-output name=container_registry_name::$(jq -r .container_registry_name.value terraform-output.json)"
+        echo "::set-output name=spring_cloud_service_name::$(jq -r .spring_cloud_service_name.value terraform-output.json)"
       working-directory: '${{ github.workspace }}/terraform'
       shell: bash
     - name: Disable local IP access to the Storage Account
