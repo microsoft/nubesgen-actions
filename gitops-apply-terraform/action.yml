@@ -110,9 +110,3 @@ runs:
         azcliversion: 2.30.0
         inlineScript: |
           az storage account network-rule remove --account-name $TF_STORAGE_ACCOUNT --ip-address $LOCAL_IP --only-show-errors
-    - name: Save Terraform output data
-      uses: actions/upload-artifact@v2
-      with:
-        name: terraform-output
-        path: '${{ github.workspace }}/terraform/terraform-output.json'
-        retention-days: 1
