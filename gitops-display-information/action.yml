@@ -1,0 +1,25 @@
+name: 'Display Azure infrastructure information'
+description: 'Display information on the Azure generated resources, like your application URL'
+inputs:
+  application_name:
+    description: 'Name of the application'
+    required: true
+  application_url: 
+    description: 'URL of the application'
+    required: true
+  resource_group: 
+    description: 'Resource group name where the resources have been deployed'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Here is the information on your Azure resources
+      env:
+        APPLICATION_NAME: ${{ inputs.application_name }}
+        APPLICATION_URL: ${{ inputs.application_url }}
+        RESOURCE_GROUP: ${{ inputs.resource_group }}
+      run: |
+        echo "Resource group: ${RESOURCE_GROUP}"
+        echo "Application name: ${APPLICATION_NAME}"
+        echo "Application URL: ${APPLICATION_URL}"
+      shell: bash
