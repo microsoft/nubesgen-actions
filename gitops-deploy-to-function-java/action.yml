@@ -13,6 +13,7 @@ inputs:
     default: 'package'    
 runs:
   using: "composite"
+  steps:
     - name: Download application package
       uses: actions/download-artifact@v2
       with:
