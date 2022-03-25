@@ -7,7 +7,7 @@ inputs:
   use_staging_deployment:
     description: 'Use staging deployement (blue/green deployment)'
     required: false
-    default: false
+    default: true
   application_name: 
     description: 'The name of the application that will be deployed'
     required: true
