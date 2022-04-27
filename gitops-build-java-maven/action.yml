@@ -4,7 +4,7 @@ inputs:
   java_version:
     description: 'The Java version'
     required: false
-    default: '11'
+    default: '17'
   build_command:
     description: 'The command to build the Java project'
     required: false
