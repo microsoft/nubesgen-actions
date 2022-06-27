@@ -1,0 +1,45 @@
+name: 'Build a Python project'
+description: 'Build a Python project'
+inputs:
+  python_version:
+    description: 'The Python version'
+    required: false
+    default: '3.9'
+  application_package_path:
+    description: 'The path to your web app project, defaults to the repository root'
+    required: false
+    default: '.'
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Use Python ${{ inputs.python_version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ inputs.python_version }}
+    - name: Create and start virtual environment
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+    - name: Cache Python dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+      shell: bash
+    - name: Build the application
+      run: ${{ inputs.build_command }}
+      shell: bash
+    - name: Temporarily save package
+      uses: actions/upload-artifact@v3
+      with:
+        name: package
+        path: |
+          .
+          !venv/
+        retention-days: 1
