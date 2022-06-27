@@ -19,10 +19,10 @@ runs:
       with:
         python-version: ${{ inputs.python_version }}
     - name: Create and start virtual environment
-        run: |
-          python -m venv venv
-          source venv/bin/activate
-        shell: bash
+      run: |
+        python -m venv venv
+        source venv/bin/activate
+      shell: bash
     - name: Cache Python dependencies
       uses: actions/cache@v3
       with:
