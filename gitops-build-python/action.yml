@@ -22,6 +22,7 @@ runs:
         run: |
           python -m venv venv
           source venv/bin/activate
+        shell: bash
     - name: Cache Python dependencies
       uses: actions/cache@v3
       with:
