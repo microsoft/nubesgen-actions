@@ -22,7 +22,7 @@ runs:
   using: "composite"
   steps:
     - name: Download application package
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: package
     - name: Login to Azure
