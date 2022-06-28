@@ -30,7 +30,7 @@ runs:
   using: "composite"
   steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Set environment variables
       env:
         AZURE_CREDENTIALS: ${{ inputs.azure_credentials }}
