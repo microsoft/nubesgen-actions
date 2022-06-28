@@ -34,7 +34,7 @@ runs:
         -DfunctionAppName=${{ inputs.application_name }}
       shell: bash
     - name: Temporarily save package
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: package
         path: '${{ github.workspace }}/target/*.[j,w]ar'

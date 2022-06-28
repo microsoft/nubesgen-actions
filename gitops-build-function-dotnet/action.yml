@@ -27,7 +27,7 @@ runs:
       run: ${{ inputs.build_command }}
       shell: bash
     - name: Temporarily save package
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: package
         path: '${{ inputs.application_package_path }}/output'

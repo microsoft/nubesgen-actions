@@ -48,7 +48,7 @@ runs:
         zip -r ../package.zip *
       shell: bash
     - name: Temporarily save package
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: package
         path: './package.zip'
