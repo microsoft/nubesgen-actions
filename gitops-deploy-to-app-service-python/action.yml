@@ -27,4 +27,3 @@ runs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ inputs.application_name }}
-        package: './package.zip'
