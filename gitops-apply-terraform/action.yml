@@ -56,7 +56,7 @@ runs:
       env:
         TF_STORAGE_ACCOUNT: ${{ inputs.tf_storage_account }}
       with:
-        azcliversion: 2.30.0
+        azcliversion: 2.42.0
         inlineScript: |
           az storage account network-rule add --account-name $TF_STORAGE_ACCOUNT --ip-address $LOCAL_IP --only-show-errors
           sleep 10
@@ -108,6 +108,6 @@ runs:
       env:
         TF_STORAGE_ACCOUNT: ${{ inputs.tf_storage_account }}
       with:
-        azcliversion: 2.30.0
+        azcliversion: 2.42.0
         inlineScript: |
           az storage account network-rule remove --account-name $TF_STORAGE_ACCOUNT --ip-address $LOCAL_IP --only-show-errors
