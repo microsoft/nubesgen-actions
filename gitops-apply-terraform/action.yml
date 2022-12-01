@@ -44,7 +44,7 @@ runs:
         echo "LOCAL_IP=$(curl whatismyip.akamai.com)" >> $GITHUB_ENV
       shell: bash
     - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
+      uses: hashicorp/setup-terraform@v2
       with:
         terraform_wrapper: false
     - name: Azure Login
@@ -56,7 +56,7 @@ runs:
       env:
         TF_STORAGE_ACCOUNT: ${{ inputs.tf_storage_account }}
       with:
-        azcliversion: 2.30.0
+        azcliversion: 2.42.0
         inlineScript: |
           az storage account network-rule add --account-name $TF_STORAGE_ACCOUNT --ip-address $LOCAL_IP --only-show-errors
           sleep 10
@@ -95,11 +95,11 @@ runs:
       run: |
         export ARM_CLIENT_SECRET=$(echo $AZURE_CREDENTIALS | jq -r .clientSecret)
         echo $(terraform output -json) > terraform-output.json
-        echo "::set-output name=application_name::$(jq -r .application_name.value terraform-output.json)"
-        echo "::set-output name=application_url::$(jq -r .application_url.value terraform-output.json)"
-        echo "::set-output name=resource_group::$(jq -r .resource_group.value terraform-output.json)"
-        echo "::set-output name=container_registry_name::$(jq -r .container_registry_name.value terraform-output.json)"
-        echo "::set-output name=spring_cloud_service_name::$(jq -r .spring_cloud_service_name.value terraform-output.json)"
+        echo "application_name=$(jq -r .application_name.value terraform-output.json)" >> $GITHUB_OUTPUT
+        echo "application_url=$(jq -r .application_url.value terraform-output.json)" >> $GITHUB_OUTPUT
+        echo "resource_group=$(jq -r .resource_group.value terraform-output.json)" >> $GITHUB_OUTPUT
+        echo "container_registry_name=$(jq -r .container_registry_name.value terraform-output.json)" >> $GITHUB_OUTPUT
+        echo "spring_cloud_service_name=$(jq -r .application_name.value terraform-output.json)" >> $GITHUB_OUTPUT
       working-directory: '${{ github.workspace }}/terraform'
       shell: bash
     - name: Disable local IP access to the Storage Account
@@ -107,6 +107,6 @@ runs:
       env:
         TF_STORAGE_ACCOUNT: ${{ inputs.tf_storage_account }}
       with:
-        azcliversion: 2.30.0
+        azcliversion: 2.42.0
         inlineScript: |
           az storage account network-rule remove --account-name $TF_STORAGE_ACCOUNT --ip-address $LOCAL_IP --only-show-errors
