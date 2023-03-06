@@ -24,9 +24,9 @@ outputs:
   container_registry_name: 
     description: 'The Container registry name that have has deployed'
     value: ${{ steps.terraform-output.outputs.container_registry_name }}
-  spring_cloud_service_name: 
-    description: 'Azure Spring Cloud service name'
-    value: ${{ steps.terraform-output.outputs.spring_cloud_service_name }}
+  spring_apps_service_name: 
+    description: 'Azure Spring Apps service name'
+    value: ${{ steps.terraform-output.outputs.spring_apps_service_name }}
 runs:
   using: "composite"
   steps:
@@ -99,7 +99,7 @@ runs:
         echo "application_url=$(jq -r .application_url.value terraform-output.json)" >> $GITHUB_OUTPUT
         echo "resource_group=$(jq -r .resource_group.value terraform-output.json)" >> $GITHUB_OUTPUT
         echo "container_registry_name=$(jq -r .container_registry_name.value terraform-output.json)" >> $GITHUB_OUTPUT
-        echo "spring_cloud_service_name=$(jq -r .application_name.value terraform-output.json)" >> $GITHUB_OUTPUT
+        echo "spring_apps_service_name=$(jq -r .application_name.value terraform-output.json)" >> $GITHUB_OUTPUT
       working-directory: '${{ github.workspace }}/terraform'
       shell: bash
     - name: Disable local IP access to the Storage Account
