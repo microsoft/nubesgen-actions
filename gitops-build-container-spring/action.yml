@@ -1,5 +1,5 @@
-name: 'Build a Docker image using Java'
-description: 'Build a Docker image using Java'
+name: 'Build a Docker image using Spring'
+description: 'Build a Docker image using Spring'
 inputs:
   java_version:
     description: 'The Java version'
