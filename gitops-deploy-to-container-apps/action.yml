@@ -34,6 +34,7 @@ runs:
       run: |
         docker load --input /tmp/application.tar
         docker tag application/application ${{ inputs.image_name }}
+      shell: bash
     - name: Login to Azure
       uses: azure/login@v1
       with:
