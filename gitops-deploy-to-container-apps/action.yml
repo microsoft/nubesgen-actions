@@ -13,6 +13,9 @@ inputs:
   container_registry_name:
     description: 'The name of the resource group containing the resources'
     required: true
+  image_name:
+    description: 'The name of the Docker image to deploy'
+    required: true
   artifact_name:
     description: 'The name of the artifact containing the application to deploy.'
     required: false
@@ -30,7 +33,7 @@ runs:
     - name: Load image and retag it
       run: |
         docker load --input /tmp/application.tar
-        docker tag application/application ${{ inputs.container_registry_name }}.azurecr.io/${{ inputs.application_name }}/${{ inputs.application_name }}:${{ github.sha }}
+        docker tag application/application ${{ inputs.image_name }}
     - name: Login to Azure
       uses: azure/login@v1
       with:
@@ -38,7 +41,7 @@ runs:
     - name: Push to Azure Container Registry
       run: |
         az acr login -n ${{ inputs.container_registry_name }}.azurecr.io
-        docker push ${{ inputs.container_registry_name }}.azurecr.io/${{ inputs.application_name }}/${{ inputs.application_name }}:${{ github.sha }}
+        docker push ${{ inputs.image_name }}
       shell: bash
     - name: Deploy to Container App
       uses: azure/CLI@v1
@@ -48,5 +51,5 @@ runs:
           az containerapp update \
             -n ${{ inputs.application_name }} \
             -g ${{ inputs.resource_group }} \
-            --image ${{ inputs.container_registry_name }}.azurecr.io/${{ inputs.application_name }}/${{ inputs.application_name }}:${{ github.sha }}
+            --image ${{ inputs.image_name }}
   
