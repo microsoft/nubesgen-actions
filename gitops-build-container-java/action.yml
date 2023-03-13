@@ -1,0 +1,39 @@
+name: 'Build a Docker image using Java'
+description: 'Build a Docker image using Java'
+inputs:
+  java_version:
+    description: 'The Java version'
+    required: false
+    default: '17'
+  build_command:
+    description: 'The command to build the Docker image'
+    required: false
+    default: './mvnw -Pnative spring-boot:build-image -DskipTests -Dspring-boot.build-image.publish=false -Dspring-boot.build-image.imageName=application/application'
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Set up Java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: ${{ inputs.java_version }}
+        check-latest: false
+        cache: 'maven'
+    - name: Build the Docker image
+      run: ${{ inputs.build_command }}
+      shell: bash
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+    - name: Export Docker image
+      uses: docker/build-push-action@v4
+      with:
+        tags: 'application/application:${{ github.sha }}'
+        outputs: type=docker,dest=/tmp/application.tar
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: docker-image
+        path: /tmp/application.tar
+        retention-days: 1
