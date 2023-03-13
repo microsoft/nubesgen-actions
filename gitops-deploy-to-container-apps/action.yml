@@ -33,7 +33,7 @@ runs:
     - name: Load image and retag it
       run: |
         docker load --input /tmp/application.tar
-        docker tag application/application ${{ inputs.image_name }}
+        docker tag application/application:${{ github.sha }} ${{ inputs.image_name }}
       shell: bash
     - name: Login to Azure
       uses: azure/login@v1
