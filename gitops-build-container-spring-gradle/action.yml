@@ -8,7 +8,7 @@ inputs:
   build_command:
     description: 'The command to build the Docker image'
     required: false
-    default: './gradlew bootBuildImage -x test --publishImage=false --imageName=application/application:${{ github.sha }}'
+    default: 'gradle bootBuildImage -x test --publishImage=false --imageName=application/application:${{ github.sha }}'
 runs:
   using: "composite"
   steps:
