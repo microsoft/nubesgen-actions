@@ -24,17 +24,13 @@ runs:
     - name: Build the Docker image
       run: ${{ inputs.build_command }}
       shell: bash
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-    - name: Export Docker image
-      uses: docker/build-push-action@v4
-      with:
-        context: .
-        tags: 'application/application:${{ github.sha }}'
-        outputs: type=docker,dest=/tmp/application.tar
+    - name: Save the Docker image
+      run: |
+        docker save application/application:${{ github.sha }} | gzip > /tmp/application.tar.gz
+      shell: bash
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
         name: docker-image
-        path: /tmp/application.tar
+        path: /tmp/application.tar.gz
         retention-days: 1
