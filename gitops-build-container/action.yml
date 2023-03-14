@@ -1,0 +1,28 @@
+name: 'Build a Docker image'
+description: 'Build a Docker image'
+inputs:
+  build_command:
+    description: 'The command to build the Docker image'
+    required: false
+    default: 'docker build . -t application/application:${{ github.sha }}'
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: ${{ inputs.build_command }}
+      shell: bash
+    - name: Build the Docker image
+      run: ${{ inputs.build_command }}
+      shell: bash
+    - name: Save the Docker image
+      run: |
+        docker save application/application:${{ github.sha }} | gzip > /tmp/application.tar.gz
+      shell: bash
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: docker-image
+        path: /tmp/application.tar.gz
+        retention-days: 1
