@@ -29,6 +29,7 @@ runs:
     - name: Export Docker image
       uses: docker/build-push-action@v4
       with:
+        context: .
         tags: 'application/application:${{ github.sha }}'
         outputs: type=docker,dest=/tmp/application.tar
     - name: Upload artifact
