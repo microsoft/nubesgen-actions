@@ -63,5 +63,5 @@ runs:
             -n ${{ inputs.application_name }} \
             -g ${{ inputs.resource_group }} \
             --query properties.configuration.ingress.fqdn \
-            --raw-output)" >> $GITHUB_OUTPUT
+             --output tsv)" >> $GITHUB_OUTPUT
       shell: bash
