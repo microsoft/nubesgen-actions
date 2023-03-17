@@ -59,10 +59,9 @@ runs:
     - name: Get output data from Container Apps
       id: container-apps-output
       run: |
-        export FQDN=$(az containerapp show \
+        echo "application_url=$(az containerapp show \
             -n ${{ inputs.application_name }} \
             -g ${{ inputs.resource_group }} \
-            --query properties.configuration.ingress.fqdn)
-        
-        echo "$FQDN" >> $GITHUB_OUTPUT
+            --query properties.configuration.ingress.fqdn \
+            --raw-output)" >> $GITHUB_OUTPUT
       shell: bash
