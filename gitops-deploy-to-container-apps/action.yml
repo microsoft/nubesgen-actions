@@ -59,7 +59,7 @@ runs:
     - name: Get output data from Container Apps
       id: container-apps-output
       run: |
-        echo "application_url=https:\/\/$(az containerapp show \
+        echo "application_url=https:\\$(az containerapp show \
             -n ${{ inputs.application_name }} \
             -g ${{ inputs.resource_group }} \
             --query properties.configuration.ingress.fqdn \
