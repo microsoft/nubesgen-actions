@@ -66,7 +66,7 @@ runs:
         TF_STORAGE_ACCOUNT: ${{ inputs.tf_storage_account }}
       run: |
         export ARM_CLIENT_SECRET=$(echo $AZURE_CREDENTIALS | jq -r .clientSecret)
-        for i in {1..10}; do terraform init \
+        for i in {1..30}; do terraform init \
         -input=false \
         -backend-config="resource_group_name=${{ inputs.resource_group_name }}" \
         -backend-config="storage_account_name=$TF_STORAGE_ACCOUNT" \
