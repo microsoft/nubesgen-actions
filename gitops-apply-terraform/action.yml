@@ -41,7 +41,6 @@ runs:
         echo "ARM_CLIENT_ID=$(echo $AZURE_CREDENTIALS | jq -r .clientId)" >> $GITHUB_ENV
         echo "ARM_SUBSCRIPTION_ID=$(echo $AZURE_CREDENTIALS | jq -r .subscriptionId)" >> $GITHUB_ENV
         echo "ARM_TENANT_ID=$(echo $AZURE_CREDENTIALS | jq -r .tenantId)" >> $GITHUB_ENV
-        echo "LOCAL_IP=$(curl whatismyip.akamai.com)" >> $GITHUB_ENV
       shell: bash
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
@@ -58,7 +57,7 @@ runs:
       with:
         azcliversion: 2.46.0
         inlineScript: |
-          az storage account network-rule add --account-name $TF_STORAGE_ACCOUNT --ip-address $LOCAL_IP --only-show-errors
+          az storage account update --name $TF_STORAGE_ACCOUNT --default-action Allow
           sleep 10
     - name: Initialize Terraform
       env:
@@ -66,7 +65,7 @@ runs:
         TF_STORAGE_ACCOUNT: ${{ inputs.tf_storage_account }}
       run: |
         export ARM_CLIENT_SECRET=$(echo $AZURE_CREDENTIALS | jq -r .clientSecret)
-        for i in {1..30}; do terraform init \
+        for i in {1..10}; do terraform init \
         -input=false \
         -backend-config="resource_group_name=${{ inputs.resource_group_name }}" \
         -backend-config="storage_account_name=$TF_STORAGE_ACCOUNT" \
@@ -109,4 +108,4 @@ runs:
       with:
         azcliversion: 2.46.0
         inlineScript: |
-          az storage account network-rule remove --account-name $TF_STORAGE_ACCOUNT --ip-address $LOCAL_IP --only-show-errors
+          az storage account update --name $TF_STORAGE_ACCOUNT --default-action Allow
