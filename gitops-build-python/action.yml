@@ -4,7 +4,7 @@ inputs:
   python_version:
     description: 'The Python version'
     required: false
-    default: '3.9'
+    default: '3.11'
   application_package_path:
     description: 'The path to your web app project, defaults to the repository root'
     required: false
@@ -13,23 +13,17 @@ runs:
   using: "composite"
   steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: Use Python ${{ inputs.python_version }}
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ inputs.python_version }}
+        cache: 'pip'
     - name: Create and start virtual environment
       run: |
         python -m venv venv
         source venv/bin/activate
       shell: bash
-    - name: Cache Python dependencies
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
     - name: Install dependencies
       run: pip install -r requirements.txt
       shell: bash
