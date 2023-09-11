@@ -13,9 +13,6 @@ runs:
     - name: Build the Docker image
       run: ${{ inputs.build_command }}
       shell: bash
-    - name: Build the Docker image
-      run: ${{ inputs.build_command }}
-      shell: bash
     - name: Save the Docker image
       run: |
         docker save application/application:${{ github.sha }} | gzip > /tmp/application.tar.gz
