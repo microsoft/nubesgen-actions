@@ -4,7 +4,7 @@ inputs:
   nodejs_version:
     description: 'The NodeJS version'
     required: false
-    default: '14'
+    default: '18'
   application_package_path:
     description: 'The path to your web app project, defaults to the repository root'
     required: false
