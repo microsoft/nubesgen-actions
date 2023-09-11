@@ -4,7 +4,7 @@ inputs:
   dotnet_version:
     description: 'The .NET version'
     required: false
-    default: '6.0'
+    default: '7.x'
   application_package_path:
     description: 'The path to your web app project, defaults to the repository root'
     required: false
@@ -23,7 +23,7 @@ runs:
     - name: Checkout code
       uses: actions/checkout@v4
     - name: Set up .NET ${{ inputs.dotnet_version }}
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: ${{ inputs.dotnet_version }}
     - name: Build .NET application
