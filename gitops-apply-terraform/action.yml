@@ -43,19 +43,19 @@ runs:
         echo "ARM_TENANT_ID=$(echo $AZURE_CREDENTIALS | jq -r .tenantId)" >> $GITHUB_ENV
       shell: bash
     - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v2
+      uses: hashicorp/setup-terraform@v3
       with:
         terraform_wrapper: false
     - name: Azure Login
-      uses: azure/login@v1
+      uses: azure/login@v2
       with:
         creds: ${{ inputs.azure_credentials }}   
     - name: Authorize local IP to access the Storage Account
-      uses: azure/CLI@v1
+      uses: azure/CLI@v2
       env:
         TF_STORAGE_ACCOUNT: ${{ inputs.tf_storage_account }}
       with:
-        azcliversion: 2.46.0
+        azcliversion: 2.58.0
         inlineScript: |
           az storage account update --name $TF_STORAGE_ACCOUNT --default-action Allow
           sleep 10
@@ -102,10 +102,10 @@ runs:
       working-directory: '${{ github.workspace }}/terraform'
       shell: bash
     - name: Disable local IP access to the Storage Account
-      uses: azure/CLI@v1
+      uses: azure/CLI@v2
       env:
         TF_STORAGE_ACCOUNT: ${{ inputs.tf_storage_account }}
       with:
-        azcliversion: 2.46.0
+        azcliversion: 2.58.0
         inlineScript: |
           az storage account update --name $TF_STORAGE_ACCOUNT --default-action Allow

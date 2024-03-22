@@ -42,7 +42,7 @@ runs:
         echo "ARM_TENANT_ID=$(echo $AZURE_CREDENTIALS | jq -r .tenantId)" >> $GITHUB_ENV
       shell: bash
     - name: Log into Azure
-      uses: azure/login@v1
+      uses: azure/login@v2
       with:
         creds: ${{ inputs.azure_credentials }}
     - name: Deploy infrastructure
