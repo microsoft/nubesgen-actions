@@ -108,4 +108,4 @@ runs:
       with:
         azcliversion: 2.58.0
         inlineScript: |
-          az storage account update --name $TF_STORAGE_ACCOUNT --default-action Allow
+          az storage account update --name $TF_STORAGE_ACCOUNT --default-action Deny
